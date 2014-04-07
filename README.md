@@ -3,7 +3,8 @@ Comment utiliser le Personal HPC sigma135
 
 Ce site décrit l'utilisation quotidienne du Personal HPC sigma135, un serveur de sauvegarde de 135 TB.  
 On ne décrit pas ici comment installer le serveur.  
-On appellera cet ordinateur de sauvegarde `SIGMA`.
+On appellera cet ordinateur de sauvegarde `SIGMA`.  
+Toutes les commandes commençant par `sudo` doivent être executées par un utilisateur ayant les droits d'administration.
 
 Comment démarrer SIGMA si elle est éteinte ?
 --------------------------------------------
@@ -45,6 +46,16 @@ lola
 lili
 ```
 
+
+Comment changer le mot de passe d'un utilisateur ?
+--------------------------------------------------
+De temps en temps, un utilisateur perdra son mot de passe.
+Pour changer le mot de passe de l'utilisateur jeansarkozy :
+```
+sudo passwd jeansarkozy
+```
+
+
 Comment ajouter un utilisateur ?
 --------------------------------
 Si on veut ajouter un utilisateur appelé [jeansarkozy](http://fr.wikipedia.org/wiki/Jean_Sarkozy), il suffit de donner au terminal:
@@ -55,3 +66,4 @@ puis, sans se soucier de ce que ça veut dire :
 ```
 sudo adduser $USER && sudo zfs create tank/$USER && sudo chown -R $USER:$USER /tank/$USER && sudo passwd $USER
 ```
+
