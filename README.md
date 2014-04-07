@@ -1,4 +1,46 @@
-sigma135-usage
-==============
+Comment utiliser le Personal HPC sigma135 
+=========================================
 
-Où l'on décrit comment utiliser le personal HPC sigma135 au quotidien.
+Ce site décrit l'utilisation quotidienne du Personal HPC sigma135, un serveur de sauvegarde de 135 TB.  
+On ne décrit pas ici comment installer le serveur.  
+On appellera cet ordinateur de sauvegarde `SIGMA`.
+
+Comment démarrer SIGMA si elle est éteinte ?
+--------------------------------------------
+
+Il y a un bouton (rond) en face avant (photo à venir) qui permet de la démarrer par une simple pression.  
+Sous tension, ce bouton devient bleu lumineux.
+
+Que faire après le démarrage ?
+------------------------------
+
+D'abord, il faut se connecter à la machine par ssh avec un utilisateur ayant les droits d'administration :  
+```
+ssh USER@134.157.169.39
+```
+Il faut alors entrer son mot de passe.
+
+Il faut ensuite redémarrer le système de fichier ZFS  
+```
+sudo /etc/init.d/zfs.fuse start
+```
+On pourrait décider de démarrer ZFS automatiquement, mais je crois que c'est une bonne idée.
+
+Ça y est ! Le système est prêt à tourner jusqu'à la prochaine coupure de courant :-)
+
+Comment lister tous les utilisateurs ?
+---------------------------------------
+```
+cat /etc/passwd |grep "/home" |cut -d: -f1
+```
+
+Affichera tous les utilisateurs qui ont un dossier home (tous les utilisateurs créés ont par défaut un dossier home). 
+```
+minimoi
+toto
+tata
+titi
+choupli
+lola
+lili
+```
