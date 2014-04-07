@@ -44,3 +44,14 @@ choupli
 lola
 lili
 ```
+
+Comment ajouter un utilisateur ?
+--------------------------------
+Si on veut ajouter un utilisateur appelé [jeansarkozy](http://fr.wikipedia.org/wiki/Jean_Sarkozy), il suffit de donner au terminal:
+```
+USER=jeansarkozy
+```
+puis, sans se soucier de ce que ça veut dire :
+```
+sudo adduser $USER && sudo zfs create tank/$USER && sudo chown -R $USER:$USER /tank/$USER && sudo passwd $USER
+```
