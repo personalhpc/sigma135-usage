@@ -64,7 +64,8 @@ USER=dupont
 ```
 puis, sans se soucier de ce que ça veut dire :
 ```
-sudo adduser $USER && sudo zfs create data/$USER && sudo chown -R $USER:$USER /data/$USER && sudo passwd $USER
+sudo adduser $USER && sudo passwd $USER && echo "Ce password doit etre transmis a $USER qui doit le changer rapidement"; sudo zfs create data/$USER && sudo chown -R $USER:$USER /data/$USER && echo "Tout a bien fonctionne. --Personal HPC"
+
 ```
 
 Comment ajouter un ordinateur à un utilisateur ?
