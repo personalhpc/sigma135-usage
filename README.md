@@ -67,3 +67,44 @@ puis, sans se soucier de ce que ça veut dire :
 sudo adduser $USER && sudo zfs create tank/$USER && sudo chown -R $USER:$USER /tank/$USER && sudo passwd $USER
 ```
 
+
+
+
+
+
+
+Informations diverses et/ou techniques
+---------------------------------------
+
+PHPCsigma135 fonctionne sous CentOS.  
+Il y a deux disques durs systèmes en RAID 1, `md0` et `md1`.  
+md0 correspond à
+  - UUID : c2f02389:83fbf580:7d507bf0:f1a21995
+  - /dev/sda1 + /dev/sdb1
+
+md1 correspond à
+  - UUID : 2c8158f2:f6df0528:325f979f:e4e96b93
+  - /dev/sda2 + /dev/sdb2
+
+
+On a ensuite un zpool ZFS nommé `data` en raidz3 qui contient 15 disques 3TB: 
+*c, f, i, l, o, r, u, x, aa, ad, ag, aj, am, ap, as*  
+créé par un   
+```
+sudo zpool create data raidz3 sdc sdf sdi sdl sdo sdr sdu sdx sdaa sdad sdag sdaj sdam sdap sdas
+```
+
+puis un zpool nommé `databackup` qui est dédié à la sauvegarde de data: 
+*d, g, j, m, p, s, v, y, ab, ae, ah, ak, an, aq, at*  
+créé par un   
+```
+sudo zpool create databackup raidz3 sdd sdg sdj sdm sdp sds sdv sdy sdab sdae sdah sdak sdan sdaq sdat
+```
+
+puis enfin un zpool nommé `backupbackup` qui est dédié à la sauvegarde de la sauvegarde
+*e, h, k, n, q, t, w, z, ac, af, ai, al, ao, ar, au*    
+créé par un   
+```
+sudo zpool create backupbackup raidz3 sde sdh sdk sdn sdq sdt sdw sdz sdac sdaf sdai sdal sdao sdar sdau
+```
+
