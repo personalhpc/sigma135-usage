@@ -13,7 +13,7 @@ Il y a un bouton (rond) en face avant (photo à venir) qui permet de la démarre
 Sous tension, ce bouton devient bleu lumineux.
 
 Que faire après le démarrage ?
-------------------------------
+--------------------------------------------
 
 D'abord, il faut se connecter à la machine par ssh avec un utilisateur ayant les droits d'administration :  
 ```
@@ -49,32 +49,54 @@ lili
 
 Comment changer le mot de passe d'un utilisateur ?
 --------------------------------------------------
-De temps en temps, un utilisateur perdra son mot de passe.
-Pour changer le mot de passe de l'utilisateur jeansarkozy :
+De temps en temps, un utilisateur oubliera son mot de passe.
+Pour changer le mot de passe de l'utilisateur dupont :
 ```
-sudo passwd jeansarkozy
+sudo passwd dupont
 ```
 
 
 Comment ajouter un utilisateur ?
 --------------------------------
-Si on veut ajouter un utilisateur appelé [jeansarkozy](http://fr.wikipedia.org/wiki/Jean_Sarkozy), il suffit de donner au terminal:
+Si on veut ajouter un utilisateur appelé dupont, il suffit de donner au terminal:
 ```
-USER=jeansarkozy
+USER=dupont
 ```
 puis, sans se soucier de ce que ça veut dire :
 ```
-sudo adduser $USER && sudo zfs create tank/$USER && sudo chown -R $USER:$USER /tank/$USER && sudo passwd $USER
+sudo adduser $USER && sudo zfs create data/$USER && sudo chown -R $USER:$USER /data/$USER && sudo passwd $USER
+```
+Si `dupont` veut sauvegarder les fichiers depuis l'ordinateur `kemour`, il faut taper les lignes suivantes :
+```
+USER=dupont
+ORDINAME=kemour
+sudo zfs create data/$USER/$ORDINAME && sudo chown -R $USER:$USER /data/$USER
 ```
 
+Moi, utilisateur, je veux sauvegarder mon ordi. Comment faire ?
+---------------------------------------------------------------
 
+Si mon nom d'utilisateur est `dupont` et que mon ordinateur s'appelle `kemour`, j'ai accès à un espace de sauvegarde sur le PersonalHPC sigma. Son adresse IP est `134.157.169.39`.
+
+Si `ssh dupont@134.157.169.39` ne fonctionne pas, il faut demander à l'administrateur de créer un compte sur Personal HPC sigma135.
+
+Je peux utiliser ma méthode préférée pour faire mes sauvegardes : cp, scp, rsync, ...  
+`rsync` est très fortement recommandé. Voici un script bash qui sauvegarde tout mon home :
+```
+  USER=dupont
+  SOURCE='/home/$USER/'
+  IPSIGMA='134.157.169.39'
+  TARGET='$USER@IPSIGMA:/data/$USER'
+  OPTIONS="-avhE --progress --delete-after --exclude=.cache"
+  rsync $OPTIONS $SOURCE $TARGET
+```
 
 
 
 
 
 Informations diverses et/ou techniques
----------------------------------------
+=========================================
 
 PHPCsigma135 fonctionne sous CentOS.  
 Il y a deux disques durs systèmes en RAID 1, `md0` et `md1`.  
@@ -88,23 +110,20 @@ md1 correspond à
 
 
 On a ensuite un zpool ZFS nommé `data` en raidz3 qui contient 15 disques 3TB: 
-*c, f, i, l, o, r, u, x, aa, ad, ag, aj, am, ap, as*  
 créé par un   
 ```
-sudo zpool create data raidz3 sdc sdf sdi sdl sdo sdr sdu sdx sdaa sdad sdag sdaj sdam sdap sdas
+sudo zpool create -f data raidz3 sdc sdf sdi sdl sdo sdr sdu sdx sdaa sdad sdag sdaj sdam sdap sdas
 ```
 
 puis un zpool nommé `databackup` qui est dédié à la sauvegarde de data: 
-*d, g, j, m, p, s, v, y, ab, ae, ah, ak, an, aq, at*  
 créé par un   
 ```
-sudo zpool create databackup raidz3 sdd sdg sdj sdm sdp sds sdv sdy sdab sdae sdah sdak sdan sdaq sdat
+sudo zpool create -f databackup raidz3 sdd sdg sdj sdm sdp sds sdv sdy sdab sdae sdah sdak sdan sdaq sdat
 ```
 
 puis enfin un zpool nommé `backupbackup` qui est dédié à la sauvegarde de la sauvegarde
-*e, h, k, n, q, t, w, z, ac, af, ai, al, ao, ar, au*    
 créé par un   
 ```
-sudo zpool create backupbackup raidz3 sde sdh sdk sdn sdq sdt sdw sdz sdac sdaf sdai sdal sdao sdar sdau
+sudo zpool create -f backupbackup raidz3 sde sdh sdk sdn sdq sdt sdw sdz sdac sdaf sdai sdal sdao sdar sdau
 ```
 
