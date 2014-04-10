@@ -66,6 +66,12 @@ puis, sans se soucier de ce que ça veut dire :
 ```
 sudo adduser $USER && sudo zfs create data/$USER && sudo chown -R $USER:$USER /data/$USER && sudo passwd $USER
 ```
+
+Comment ajouter un ordinateur à un utilisateur ?
+------------------------------------------------
+
+Les utilisateurs doivent avoir un compte pour chaque ordinateur qu'ils voudront sauvegarder.
+
 Si `dupont` veut sauvegarder les fichiers depuis l'ordinateur `kemour`, il faut taper les lignes suivantes :
 ```
 USER=dupont
@@ -76,9 +82,7 @@ sudo zfs create data/$USER/$ORDINAME && sudo chown -R $USER:$USER /data/$USER
 Moi, utilisateur, je veux sauvegarder mon ordi. Comment faire ?
 ---------------------------------------------------------------
 
-Si mon nom d'utilisateur est `dupont` et que mon ordinateur s'appelle `kemour`, j'ai accès à un espace de sauvegarde sur le PersonalHPC sigma. Son adresse IP est `134.157.169.39`.
-
-Si `ssh dupont@134.157.169.39` ne fonctionne pas, il faut demander à l'administrateur de créer un compte sur Personal HPC sigma135.
+Si mon nom d'utilisateur est `dupont` et que mon ordinateur s'appelle `kemour`, il faut d'abord demander à l'administrateur si j'ai bien, moi dupont, un compte pour kemour sur la machine de sauvegarde. Si non, il faudra en créer un. Il faut un compte par utilisateur et par machine : si je veux aussi sauvegarder ma machine `hapi`, on doit m'ouvrir un autre compte.
 
 Je peux utiliser ma méthode préférée pour faire mes sauvegardes : cp, scp, rsync, ...  
 `rsync` est très fortement recommandé. Voici un script bash qui sauvegarde tout mon home :
