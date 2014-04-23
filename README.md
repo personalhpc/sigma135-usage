@@ -6,28 +6,28 @@ On ne décrit pas ici comment installer le serveur.
 On appellera cet ordinateur de sauvegarde `SIGMA`.  
 Toutes les commandes commençant par `sudo` doivent être executées par un utilisateur ayant les droits d'administration.
 
+Comment éteindre SIGMA proprement ?
+-----------------------------------
+
+Par exemple, en cas de coupure de courant prévue,
+```
+sudo shutdown -h now
+```
+
 Comment démarrer SIGMA si elle est éteinte ?
 --------------------------------------------
 
 Il y a un bouton (rond) en face avant (photo à venir) qui permet de la démarrer par une simple pression.  
 Sous tension, ce bouton devient bleu lumineux.
 
-Que faire après le démarrage ?
+Que faire pour s'y connecter ?
 --------------------------------------------
 
-D'abord, il faut se connecter à la machine par ssh avec un utilisateur ayant les droits d'administration :  
+Il faut se connecter à la machine par ssh avec un utilisateur ayant les droits d'administration :  
 ```
 ssh USER@134.157.169.39
 ```
 Il faut alors entrer son mot de passe.
-
-Il faut ensuite redémarrer le système de fichier ZFS  
-```
-sudo /etc/init.d/zfs.fuse start
-```
-On pourrait décider de démarrer ZFS automatiquement, mais je crois que c'est une bonne idée.
-
-Ça y est ! Le système est prêt à tourner jusqu'à la prochaine coupure de courant :-)
 
 Comment lister tous les utilisateurs ?
 ---------------------------------------
@@ -62,9 +62,9 @@ Si on veut ajouter un utilisateur appelé dupont, il suffit de donner au termina
 ```
 USER=dupont
 ```
-puis, sans se soucier de ce que ça veut dire :
+puis coller la ligne suivante dans le terminal :
 ```
-sudo adduser $USER && sudo passwd $USER && echo "Ce password doit etre transmis a $USER qui doit le changer rapidement"; sudo zfs create data/$USER && sudo chown -R $USER:$USER /data/$USER && echo "Tout a bien fonctionne. --Personal HPC"
+sudo adduser $USER && echo "Ce password doit etre transmis a $USER qui doit le changer rapidement"; sudo zfs create data/$USER && sudo chown -R $USER:$USER /data/$USER && echo "Tout a bien fonctionne. --Personal HPC"
 
 ```
 
@@ -80,6 +80,12 @@ ORDINAME=kemour
 sudo zfs create data/$USER/$ORDINAME && sudo chown -R $USER:$USER /data/$USER && echo "Tout a bien fonctionne. --Personal HPC"
 ```
 
+puis coller la ligne suivante dans le terminal:
+```
+sudo zfs create data/$USER/$ORDINAME && sudo chown -R $USER:$USER /data/$USER && echo "Tout a bien fonctionne. --Personal HPC"
+```
+
+
 Moi, utilisateur, je veux sauvegarder mon ordi. Comment faire ?
 ---------------------------------------------------------------
 
@@ -87,15 +93,22 @@ Si mon nom d'utilisateur est `dupont` et que mon ordinateur s'appelle `kemour`, 
 
 Je peux utiliser ma méthode préférée pour faire mes sauvegardes : cp, scp, rsync, ...  
 `rsync` est très fortement recommandé. Voici un script bash qui sauvegarde tout mon home :
+
+D'abord, je dois déclarer mon nom d'utilisateur et le nom de l'ordinateur que je veux sauvegarder:
 ```
   USER=dupont
-  SOURCE='/home/$USER/'
-  IPSIGMA='134.157.169.39'
-  TARGET='$USER@IPSIGMA:/data/$USER'
+  ORDINAME=portmax
+```
+
+puis coller les lignes suivantes dans le terminal:
+```
+  SOURCE="/home/$USER/"
+  IPSIGMA="134.157.169.39"
+  TARGET="$USER@$IPSIGMA:/data/$USER/$ORDINAME"
   OPTIONS="-avhE --progress --delete-after --exclude=.cache"
   rsync $OPTIONS $SOURCE $TARGET
 ```
-
+Et voilà !
 
 
 
