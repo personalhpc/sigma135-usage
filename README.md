@@ -97,11 +97,12 @@ D'abord, je dois déclarer mon nom d'utilisateur et le nom de l'ordinateur que j
 ```
   USER=dupont
   ORDINAME=portmax
+  HOMEDIR="/LOCAL"
 ```
 
 puis coller les lignes suivantes dans le terminal:
 ```
-  SOURCE="/home/$USER/"
+  SOURCE="$HOMEDIR/$USER/"
   IPSIGMA="134.157.169.39"
   TARGET="$USER@$IPSIGMA:/data/$USER/$ORDINAME"
   OPTIONS="-avhE --progress --delete-after --exclude=.cache"
