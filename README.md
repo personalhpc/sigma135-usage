@@ -105,7 +105,7 @@ puis coller les lignes suivantes dans le terminal:
   SOURCE="$HOMEDIR/$USER/"
   IPSIGMA="134.157.169.39"
   TARGET="$USER@$IPSIGMA:/data/$USER/$ORDINAME"
-  OPTIONS="-avhE --progress --delete-after --exclude=.cache"
+  OPTIONS="-rtz --progress --delete-after --exclude=.cache"
   rsync $OPTIONS $SOURCE $TARGET
 ```
 Et voilà !
