@@ -77,7 +77,6 @@ Si `dupont` veut sauvegarder les fichiers depuis l'ordinateur `kemour`, il faut 
 ```
 USER=dupont
 ORDINAME=kemour
-sudo zfs create data/$USER/$ORDINAME && sudo chown -R $USER:$USER /data/$USER && echo "Tout a bien fonctionne. --Personal HPC"
 ```
 
 puis coller la ligne suivante dans le terminal:
